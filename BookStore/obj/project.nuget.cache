@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "mfwrG5dZfUbP5S6dQAv1xQfe/PKXA70jZL2REAXVNtKZA1elm/L7ROzOY96aZX7ZMQiX0s5ySZ/Agkhc8+33tA==",
+  "success": true,
+  "projectFilePath": "C:\\uisil\\progra2\\book\\BookStore\\BookStore.vbproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Hp\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}
