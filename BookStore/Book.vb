@@ -4,9 +4,11 @@ Imports System.IO
 
 ' Definir la clase Book con propiedades para título, autor y año de publicación.
 Public Class Book
+    Public Property BookID As Integer
     Public Property Title As String
     Public Property Author As String
     Public Property Year As Integer
+    Public Property Status As String = "Available"
 
     ' Inicializar un nuevo libro con las propiedades dadas y realizar validaciones.
     Public Sub New(title As String, author As String, year As Integer)
