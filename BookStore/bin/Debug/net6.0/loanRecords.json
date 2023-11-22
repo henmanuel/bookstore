@@ -1,0 +1,26 @@
+[
+  {
+    "LoanID": 0,
+    "BookID": 0,
+    "BorrowerUsername": "test",
+    "DateLoaned": "2023-11-21T19:47:20.1875585-06:00",
+    "DateDue": "2023-12-05T19:47:20.206072-06:00",
+    "DateReturned": "2023-11-21T19:47:40.00953-06:00"
+  },
+  {
+    "LoanID": 0,
+    "BookID": 0,
+    "BorrowerUsername": "test",
+    "DateLoaned": "2023-11-21T19:48:07.5918121-06:00",
+    "DateDue": "2023-12-05T19:48:07.5918137-06:00",
+    "DateReturned": "2023-11-21T19:48:32.6572926-06:00"
+  },
+  {
+    "LoanID": 0,
+    "BookID": 0,
+    "BorrowerUsername": "test",
+    "DateLoaned": "2023-11-21T19:49:41.9125971-06:00",
+    "DateDue": "2023-12-05T19:49:41.9125995-06:00",
+    "DateReturned": null
+  }
+]

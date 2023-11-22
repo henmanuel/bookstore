@@ -1,41 +1,52 @@
-﻿' Definir un módulo para la serialización y deserialización de libros.
-Imports Newtonsoft.Json
+﻿Imports Newtonsoft.Json
 Imports System.IO
 
 Public Module BookSerializer
-    ' Serializar una lista de libros en un archivo JSON llamado "books.json".
+    Private Const BookFilePath As String = "books.json"
+
     Public Sub SerializeBooks(books As List(Of Book))
+        ' Verificar si hay títulos de libros duplicados antes de la serialización
+        If books.GroupBy(Function(b) b.Title.Trim().ToLower()).Any(Function(g) g.Count() > 1) Then
+            Console.WriteLine("Error: Se encontraron títulos de libros duplicados. No se puede serializar la lista de libros.")
+            Return
+        End If
+
+        ' Validar los libros antes de la serialización
+        If books.Any(Function(b) String.IsNullOrEmpty(b.Title) OrElse String.IsNullOrEmpty(b.Author) OrElse b.Year <= 0) Then
+            Console.WriteLine("No se puede serializar: uno o más libros tienen datos inválidos.")
+            Return
+        End If
+
         Dim json As String = JsonConvert.SerializeObject(books, Formatting.Indented)
         Try
-            File.WriteAllText("books.json", json)
-        Catch ex As IOException
-            Console.WriteLine($"Error de IO al intentar escribir en el archivo: {ex.Message}")
-        Catch ex As UnauthorizedAccessException
-            Console.WriteLine($"Acceso no autorizado al archivo: {ex.Message}")
-        Catch ex As JsonException
-            Console.WriteLine($"Error de serialización JSON: {ex.Message}")
+            File.WriteAllText(BookFilePath, json)
         Catch ex As Exception
-            Console.WriteLine($"Error inesperado: {ex.Message}")
+            Console.WriteLine($"Error al escribir en el archivo '{BookFilePath}': {ex.Message}")
         End Try
     End Sub
 
-    ' Deserializar datos de un archivo JSON en una lista de libros.
     Public Function DeserializeBooks() As List(Of Book)
-        Dim path As String = "books.json"
-        If Not File.Exists(path) Then
-            Console.WriteLine("El archivo de libros no existe. Se creará una nueva lista vacía.")
+        If Not File.Exists(BookFilePath) Then
+            Console.WriteLine($"El archivo '{BookFilePath}' no existe. Se creará una nueva lista vacía.")
             Return New List(Of Book)()
         End If
 
         Try
-            Dim json As String = File.ReadAllText(path)
-            Return JsonConvert.DeserializeObject(Of List(Of Book))(json)
-        Catch ex As IOException
-            Console.WriteLine($"Error al leer el archivo: {ex.Message}")
+            Dim json As String = File.ReadAllText(BookFilePath)
+            If String.IsNullOrWhiteSpace(json) Then
+                Console.WriteLine($"El archivo '{BookFilePath}' está vacío. Se creará una nueva lista vacía.")
+                Return New List(Of Book)()
+            End If
+
+            Dim books As List(Of Book) = JsonConvert.DeserializeObject(Of List(Of Book))(json)
+            If books Is Nothing Then Return New List(Of Book)()
+
+            ' Validar los libros deserializados
+            Return books.Where(Function(b) Not String.IsNullOrEmpty(b.Title) AndAlso Not String.IsNullOrEmpty(b.Author) AndAlso b.Year > 0).ToList()
         Catch ex As JsonException
-            Console.WriteLine($"Error de deserialización: {ex.Message}")
+            Console.WriteLine($"Error de deserialización en el archivo '{BookFilePath}': {ex.Message}")
         Catch ex As Exception
-            Console.WriteLine($"Un error inesperado ocurrió: {ex.Message}")
+            Console.WriteLine($"Un error inesperado ocurrió al leer el archivo '{BookFilePath}': {ex.Message}")
         End Try
 
         Return New List(Of Book)()

@@ -1,7 +1,7 @@
 ' El módulo principal de la aplicación que contiene el menú y los métodos de interacción del usuario.
 Module Program
     ' Declara las listas como variables globales al principio del módulo.
-    Dim users As List(Of User) = UserSerializer.DeserializeUsers()
+    Dim users As List(Of User) = DeserializeUsers()
     Dim books As List(Of Book) = DeserializeBooks()
     Dim loanRecords As New List(Of LoanRecord)
 
@@ -12,6 +12,7 @@ Module Program
                 Return user
             End If
         Next
+
         Return Nothing
     End Function
 
@@ -26,11 +27,12 @@ Module Program
             ' Agregar el usuario "admin" a la lista de usuarios
             users.Add(adminUser)
             ' Serializar la lista de usuarios actualizada
-            UserSerializer.SerializeUsers(users)
+            SerializeUsers(users)
         End If
 
         Dim currentUser As User = Nothing
-        While currentUser Is Nothing
+
+        While True
             Console.WriteLine("Por favor, inicie sesión.")
             Console.Write("Usuario: ")
             Dim username As String = Console.ReadLine()
@@ -48,6 +50,9 @@ Module Program
                 ElseIf TypeOf currentUser Is Student Then
                     ShowStudentMenu(currentUser)
                 End If
+
+                ' Una vez que se muestra el menú y se completa, se debe cerrar la sesión del usuario actual
+                currentUser = Nothing
             Else
                 Console.WriteLine("Inicio de sesión incorrecto. Inténtelo de nuevo.")
             End If
@@ -70,6 +75,7 @@ Module Program
                     ReserveBook()
                 Case "3"
                     Console.WriteLine("Cerrando sesión de estudiante...")
+                    Exit While
                 Case Else
                     Console.WriteLine("Opción no válida, intente de nuevo.")
             End Select
@@ -78,7 +84,7 @@ Module Program
 
     Private Sub ShowLibrarianMenu(currentUser As User)
         Dim menuOption As String = ""
-        While menuOption <> "4"
+        While menuOption <> "7"
             Console.WriteLine("1. Mostrar Libros")
             Console.WriteLine("2. Agregar Libro")
             Console.WriteLine("3. Eliminar Libro")
@@ -104,6 +110,7 @@ Module Program
                     ReturnBook()
                 Case "7"
                     Console.WriteLine("Cerrando sesión de bibliotecario...")
+                    Exit While
                 Case Else
                     Console.WriteLine("Opción no válida, intente de nuevo.")
             End Select
@@ -138,6 +145,13 @@ Module Program
             Try
                 Dim newBook As New Book(title, author, year)
                 Dim books As List(Of Book) = DeserializeBooks()
+
+                ' Verificar si ya existe un libro con el mismo título
+                If books.Any(Function(b) b.Title.Equals(title, StringComparison.OrdinalIgnoreCase)) Then
+                    Console.WriteLine("Error: Ya existe un libro con este título.")
+                    Return
+                End If
+
                 books.Add(newBook)
                 SerializeBooks(books)
                 Console.WriteLine("Libro agregado correctamente.")

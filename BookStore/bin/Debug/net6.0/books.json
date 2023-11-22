@@ -1,1 +1,9 @@
-[]
+[
+  {
+    "BookID": 0,
+    "Title": "test",
+    "Author": "test",
+    "Year": 2020,
+    "Status": "Available"
+  }
+]

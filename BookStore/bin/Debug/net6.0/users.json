@@ -1,0 +1,14 @@
+[
+  {
+    "Username": "admin",
+    "SaltBase64": "/eqSxDPkX+81qxAeDQZfaUA=",
+    "PasswordHashBase64": "PNpFm2+plwllJc2SFLxulc7uQq3/4QmBKIEBnomV3zI=",
+    "Role": "librarian"
+  },
+  {
+    "Username": "test",
+    "SaltBase64": "c8JA9atsIxHgbbvJ7mXTxXM=",
+    "PasswordHashBase64": "oLhBb/68gdhzi/RNUC0GmoiU3pT4B4egad/qZ5cQS0U=",
+    "Role": "student"
+  }
+]
